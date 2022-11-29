@@ -24,7 +24,8 @@ class MainWindow(QWidget):
         btn1 = QPushButton('スタート！', self) # ボタンウィジェット作成
         btn1.move(200, 200) # ボタンの位置設定(ボタンの左上の座標)
         btn1.resize(200,100)
- 
+        btn1.setStyleSheet('QPushButton {background-color: lightseagreen}')
+    
         btn2 = QPushButton('設定', self) # ボタンウィジェット作成
         btn2.resize(btn2.sizeHint()) # ボタンのサイズの自動設定
         btn2.move(600, 200) # ボタンの位置設定(ボタンの左上の座標)
