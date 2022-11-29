@@ -29,11 +29,13 @@ class MainWindow(QWidget):
         btn2 = QPushButton('設定', self) # ボタンウィジェット作成
         btn2.resize(btn2.sizeHint()) # ボタンのサイズの自動設定
         btn2.move(600, 200) # ボタンの位置設定(ボタンの左上の座標)
+        btn2.setStyleSheet('QPushButton {background-color: lightseagreen}')
         
         btn3 = QPushButton('ログ', self) # ボタンウィジェット作成
         btn3.resize(btn3.sizeHint()) # ボタンのサイズの自動設定
         btn3.move(600, 280) # ボタンの位置設定(ボタンの左上の座標)
-    
+        btn3.setStyleSheet('QPushButton {background-color: lightseagreen}')
+            
         btn1.clicked.connect(camera.camera)
         
         
