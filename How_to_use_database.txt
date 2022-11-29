@@ -1,0 +1,10 @@
+datebaseの使い方
+
+1. database の作成
+> python create_database.py
+
+2. サーバーの立ち上げ
+> uvicorn main:app --reload
+
+3. アクセス
+2.で出てきた「http://127.0.0.1:～」にアクセスする.
