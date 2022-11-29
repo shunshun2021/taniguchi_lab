@@ -2,7 +2,9 @@ import sys
 from PyQt5.QtWidgets import QLabel
 from PyQt5.QtWidgets import QApplication, QWidget, QPushButton
 from PyQt5.QtGui import QIcon
- 
+from PyQt5.QtCore import *
+import camera
+
 class MainWindow(QWidget):
     def __init__(self, parent=None):
         super(MainWindow, self).__init__(parent) # 初期化
@@ -30,6 +32,8 @@ class MainWindow(QWidget):
         btn3 = QPushButton('ログ', self) # ボタンウィジェット作成
         btn3.resize(btn3.sizeHint()) # ボタンのサイズの自動設定
         btn3.move(600, 280) # ボタンの位置設定(ボタンの左上の座標)
+    
+        btn1.clicked.connect(camera.camera)
         
         
 if __name__ == '__main__':
