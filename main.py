@@ -70,18 +70,18 @@ async def Refister_item():
     return  all_data
 
 
-# 買い物リストに追加
+# 睡眠リストに追加
 @app.post("/Register_sleep/")
 async def Register_item():
 #async def Register_item(student_number: int, shop_name: datetime):
     # 日時を取得.
     dt_now = datetime.datetime.now()
     student_number = 4620000
-    Sleep = Sleep(student_number=student_number,sleep_time=dt_now )
-    db_session.add(Sleep)
+    sleep = Sleep(student_number=student_number,sleep_time=dt_now )
+    db_session.add(sleep)
     db_session.commit()
     
-    db = db_session.query(Item).all()
+    db = db_session.query(Sleep).all()
     all_data = make_docs(db)
     
     return all_data
