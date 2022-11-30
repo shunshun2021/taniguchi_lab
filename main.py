@@ -71,8 +71,8 @@ async def Refister_item():
 
 
 # 睡眠リストに追加
-@app.post("/Register_sleep/")
-async def Register_item():
+@app.post("/Register_sleep")
+async def Register_sleep():
 #async def Register_item(student_number: int, shop_name: datetime):
     # 日時を取得.
     dt_now = datetime.datetime.now()
@@ -88,8 +88,8 @@ async def Register_item():
 
 
 # 居眠りリストの取得
-@app.get("/sleep_list/")
-async def item_by_store():
+@app.get("/sleep_list")
+async def get_sleep_list():
     db = db_session.query(Sleep).all()
 
     all_data = {"data":[]}
@@ -105,3 +105,56 @@ async def item_by_store():
         all_data['data'].append(data)
 
     return all_data
+
+
+
+# 居眠り集中時間帯の抽出
+@app.get("/intensive")
+async def get_intensive():
+    # 30 分以内に 3 件以上の 寝落ちがある場合に抽出
+    db = db_session.query(Sleep).all()
+
+    all_data={"data":[]}
+    count=[0]*48
+    
+    # 各タプルを睡眠時間ごとに分ける.
+    for row in db:
+
+        # そのデータの時刻(何時何分)を取得
+        time = row.sleep_time
+        hour = time.hour
+        minutes = time.minute
+
+        index = 2*hour + minutes//30
+        count[index]+=1
+
+    for i in range(len(count)):
+        v = count[i]
+        if v > 2:
+            minutes = i % 2
+            if minutes == 0:
+                start_hour = v//2
+                start_minutes = 0
+                end_hour = v//2
+                end_minutes = 30
+            else:
+                start_hour = v//2
+                start_minutes = 30
+                end_hour = v//2 + 1
+                end_minutes = 0
+
+            data = {
+                "start_hour":None,
+                "start_minutes":None,
+                "end_hour" :None,
+                "end_minutes":None,
+            }
+            data['start_hour']=start_hour
+            data['start_minutes']=start_minutes
+            data['end_hour']=end_hour
+            data['end_minutes']=end_minutes
+
+            all_data['data'].append(data)
+
+    return all_data
+
