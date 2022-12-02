@@ -1,9 +1,12 @@
 import sys
 from PyQt5.QtWidgets import QLabel
-from PyQt5.QtWidgets import QApplication, QWidget, QPushButton
+from PyQt5.QtWidgets import QApplication, QWidget, QPushButton, QMainWindow, QAction, QTableWidget,QTableWidgetItem,QVBoxLayout
 from PyQt5.QtGui import QIcon
 from PyQt5.QtCore import *
+import tkinter as tk
+from tkinter import ttk
 import camera
+
 
 class MainWindow(QWidget):
     def __init__(self, parent=None):
@@ -16,7 +19,7 @@ class MainWindow(QWidget):
         self.setWindowTitle('居眠り防止アプリケーション') # ウィンドウのタイトルの設定
         #self.setWindowIcon(QIcon('xxxx.jpg')) # ウィンドウ右上のアイコンの設定
 
-    # ラベル名の設定
+        # ラベル名の設定
         lbl1 = QLabel('<p><font size="40" color="#00ff00">居眠り防止アプリ</font></p>', self)
         # ラベルをx=15,y=10へ移動
         lbl1.move(300, 10)
@@ -37,10 +40,45 @@ class MainWindow(QWidget):
         btn3.setStyleSheet('QPushButton {background-color: lightseagreen}')
             
         btn1.clicked.connect(camera.camera)
+        btn3.clicked.connect(self.log_screen)
         
-        
+    def log_screen(self):
+        # 列の識別名を指定
+        column = ('ID', 'Name', 'Score')
+        # メインウィンドウの生成
+        root = tk.Tk()
+        root.title('ログ')
+        root.geometry('1000x600')
+        # Treeviewの生成
+        tree = ttk.Treeview(root, columns=column)
+        # 文字サイズ
+        style = ttk.Style()
+        style.configure("Treeview", font=(None, 15), rowheight=40)
+        style.configure("Treeview.Heading", font=(None, 20, 'bold'))
+        # 列の設定
+        tree.column('#0',width=0, stretch='no')
+        tree.column('ID', anchor='center', width=200)
+        tree.column('Name',anchor='w', width=300)
+        tree.column('Score', anchor='center', width=200)
+        # 列の見出し設定
+        tree.heading('#0',text='')
+        tree.heading('ID', text='ID',anchor='center')
+        tree.heading('Name', text='Name', anchor='w')
+        tree.heading('Score',text='Score', anchor='center')
+        # レコードの追加
+        tree.insert(parent='', index='end', iid=0 ,values=(1, 'KAWASAKI',80))
+        tree.insert(parent='', index='end', iid=1 ,values=(2,'SHIMIZU', 90))
+        tree.insert(parent='', index='end', iid=2, values=(3,'TANAKA', 45))
+        tree.insert(parent='', index='end', iid=3, values=(4,'OKABE', 60))
+        tree.insert(parent='', index='end', iid=4, values=(5,'MIYAZAKI', 99))
+        # ウィジェットの配置
+        tree.pack(pady=10)
+
+        root.mainloop()    
+
 if __name__ == '__main__':
     app = QApplication(sys.argv) #PyQtで必ず呼び出す必要のあるオブジェクト
     main_window = MainWindow() #ウィンドウクラスのオブジェクト生成
     main_window.show() #ウィンドウの表示
+    
     sys.exit(app.exec_()) #プログラム終了
