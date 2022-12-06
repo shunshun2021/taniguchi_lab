@@ -58,13 +58,18 @@ def camera(self):
                 
             end_time = time.time()
             
-            print(end_time-start_time)
-            
             #もし，3秒経過したら，
             if end_time - start_time >= 3:
             
                 #「寝るな!」と表示
                 cv2.putText(frame,"Don't Sleep!",(10,70),cv2.FONT_HERSHEY_PLAIN,1.5,(0,0,255),2,cv2.LINE_AA)
+
+                print(end_time-start_time)
+
+                #データベースに送る
+                r = requests.post(url)
+
+                start_time = time.time() 
           
         #目を検出した場合
         elif len(eyes_list) > 0:
