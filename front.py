@@ -2,7 +2,6 @@ import sys
 from PyQt5.QtWidgets import *
 from PyQt5.QtGui import QIcon
 from PyQt5.QtCore import *
-import PySimpleGUI as sg
 import tkinter as tk
 from tkinter import ttk
 import camera
