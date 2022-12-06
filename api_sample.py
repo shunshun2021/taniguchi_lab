@@ -11,3 +11,6 @@ for v in data.values():
     for i in range(len(v)):
         # v[i] : i番目のタプル
         print(v[i])
+        
+        #学籍番号だけ取り出す.
+        #print(v[i]['student_number'])
