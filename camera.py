@@ -6,66 +6,89 @@ import main
 import time
 
 def camera(self):
-
-    url = "http://127.0.0.1:8000/Register_sleep" #データベースに送る用
     
+    url = "http://127.0.0.1:8000/Register_sleep" #データベースに送る用
 
-    cap = cv2.VideoCapture(0) #カメラ起動
-    cascade = cv2.CascadeClassifier('haarcascade_frontalface_alt2.xml')
-    eye_cascade = cv2.CascadeClassifier('haarcascade_eye_tree_eyeglasses.xml')
+    cap = cv2.VideoCapture(0)
 
-    #始まりの時間を指定
     start_time = time.time()
 
     while True:
-        ret, rgb = cap.read()
-
-        gray = cv2.cvtColor(rgb, cv2.COLOR_BGR2GRAY) #グレースケールに変換
-        faces = cascade.detectMultiScale(
-            gray, scaleFactor=1.11, minNeighbors=3, minSize=(100, 100))
         
-        #顔認証する場合
-        if len(faces) == 1: 
-            x, y, w, h = faces[0, :]
-            cv2.rectangle(rgb, (x, y), (x + w, y + h), (255, 0, 0), 2)
-
-            # 処理高速化のために顔の上半分を検出対象範囲とする
-            eyes_gray = gray[y : y + int(h/2), x : x + w]
-
-            #目の認識を実行
-            eyes = eye_cascade.detectMultiScale(
-                eyes_gray, scaleFactor=1.11, minNeighbors=3, minSize=(8, 8))
-
-            for ex, ey, ew, eh in eyes:
-                cv2.rectangle(rgb, (x + ex, y + ey), (x + ex + ew, y + ey + eh), (255, 255, 0), 1)
+        #----------------------------------------------------------------------------------------------------
+        
+        #カスケードファイルを用意（眼鏡をかけていても検出される）
+        cascade_file = "haarcascade_eye_tree_eyeglasses.xml"
+        
+        cascade = cv2.CascadeClassifier(cascade_file)
+        
+        #----------------------------------------------------------------------------------------------------
+    
+        #1フレームずつ取得する
+        ret, frame = cap.read()
+        
+        #左右を反転する
+        frame = cv2.flip(frame, 1)
+        
+        if not ret:
+            break
+        
+        #画像を縮小
+        frame = cv2.resize(frame, (500, 300))
+        
+        #グレイスケールに変換
+        gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+        
+        #目の認識を実行
+        eyes_list = cascade.detectMultiScale(gray, minNeighbors=15)
+        
+        #----------------------------------------------------------------------------------------------------
+        
+        #目の部分を四角で囲む
+        for (x,y,w,h) in eyes_list:
             
-            #目が検知できない場合
-            if len(eyes) == 0:
+            red = (0,0,255)
+            
+            cv2.rectangle(frame, (x,y), (x+w,y+h),red, 1)
+            
+        #----------------------------------------------------------------------------------------------------
+        
+        #目を検出できなかった場合
+        if len(eyes_list) == 0:
+                
+            end_time = time.time()
+            
+            #もし，3秒経過したら，
+            if end_time - start_time >= 3:
+            
+                #「寝るな!」と表示
+                cv2.putText(frame,"Don't Sleep!",(10,70),cv2.FONT_HERSHEY_PLAIN,1.5,(0,0,255),2,cv2.LINE_AA)
 
-                end_time = time.time()
+                print(end_time-start_time)
 
-                #3秒以上目を閉じていた場合
-                if end_time - start_time >= 3:
+                #データベースに送る
+                r = requests.post(url)
 
-                    #「寝るな」と表示
-                    cv2.putText(rgb,"Sleepy eyes. Wake up!",
-                        (10,100), cv2.FONT_HERSHEY_PLAIN, 3, (0,0,255), 2, cv2.LINE_AA)
+                start_time = time.time() 
+          
+        #目を検出した場合
+        elif len(eyes_list) > 0:
 
-                    r = requests.post(url) #データベースに送る
-
-            #目が検知できた場合
-            elif len(eyes) > 0:
-
-                #時間をもとに戻す
-                start_time = end_time
-
+            end_time = time.time()
+            
+            #時間をもとに戻す
+            start_time = end_time
+            
+        #----------------------------------------------------------------------------------------------------
 
         #結果を出力
-        cv2.imshow('frame', rgb)
+        cv2.imshow("human_body_detect", frame)
 
-        #エンターが押されたら終了
-        if cv2.waitKey(1) == 27:
-            break  # esc to quit
-
+        #もし，エンターが押されたら終了
+        key = cv2.waitKey(1)
+        if key == 13:
+            break
+        
     cap.release()
+    
     cv2.destroyAllWindows()
