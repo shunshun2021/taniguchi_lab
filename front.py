@@ -94,9 +94,10 @@ class log_window(QWidget):
         root.geometry('1200x800')
         
         font1 = font.Font(family='Helvetica', size=20, weight='bold')
-        label2 = tk.Label(root, text="Hello World!", fg="black", font=font1)
-        label2.pack(side="top")
-        
+        label1 = tk.Label(root, text="以下の時間帯に居眠りが集中しています!!", fg="red", font=font1)
+        label1.pack(side="top")
+        label2 = tk.Label(root, text="演習を行うなどの授業内容の変更をお勧めします。", fg="black", font=font1)
+        label2.place(x=200, y=550)
         # Treeviewの生成
         tree = ttk.Treeview(root, columns=column)
         # 文字サイズ
@@ -111,8 +112,9 @@ class log_window(QWidget):
         tree.heading('Time',text='Time', anchor='center')
         # レコードの追加
         
+        judge = 0
         for v in data.values():
-           for i in range(len(v)):
+            for i in range(len(v)):
                 # v[i] : i番目のタプル
                 #if v[i]['start']:
                 num1 = v[i]['start_hour']
@@ -124,7 +126,12 @@ class log_window(QWidget):
                 s3 = f'{num3:02}'
                 s4 = f'{num4:02}'
                 tree.insert(parent='', index='end', iid=i ,values=(str(s1) + ":" + str(s2) + "～" + str(s3) + ":" + str(s4)))        
-
+                
+                if i==9:
+                    judge = 1
+                    break
+            if judge == 1:
+                break
         # ウィジェットの配置
         tree.pack(pady=10)
         root.mainloop()
@@ -165,11 +172,17 @@ class log_window(QWidget):
         tree.heading('Sleep_Time',text='sleep_time', anchor='center')
         # レコードの追加
         
+        judge = 0
         for v in data.values():
-           for i in range(len(v)):
+            for i in range(len(v)):
               # v[i] : i番目のタプル
-             tree.insert(parent='', index='end', iid=i ,values=(i+1, v[i]['student_number'], v[i]['sleep_time']))        
-
+                tree.insert(parent='', index='end', iid=i ,values=(i+1, v[i]['student_number'], v[i]['sleep_time']))        
+                if i==9:
+                    judge = 1
+                    break
+            if judge == 1:
+                break
+             
         # ウィジェットの配置
         tree.pack(pady=10)
         root.mainloop()
