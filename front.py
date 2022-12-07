@@ -87,7 +87,7 @@ class log_window(QWidget):
         data = r.json()
         
         # 列の識別名を指定
-        column = ('Time')
+        column = ('ID', 'Time')
         # メインウィンドウの生成
         root = tk.Tk()
         root.title('ログ')
@@ -106,9 +106,11 @@ class log_window(QWidget):
         style.configure("Treeview.Heading", font=(None, 20, 'bold'))
         # 列の設定
         tree.column('#0',width=0, stretch='no')
+        tree.column('ID', anchor='center', width=100)
         tree.column('Time', anchor='center', width=400)
         # 列の見出し設定
         tree.heading('#0',text='')
+        tree.heading('ID',text='ID', anchor='center')
         tree.heading('Time',text='Time', anchor='center')
         # レコードの追加
         
@@ -125,7 +127,7 @@ class log_window(QWidget):
                 s2 = f'{num2:02}'
                 s3 = f'{num3:02}'
                 s4 = f'{num4:02}'
-                tree.insert(parent='', index='end', iid=i ,values=(str(s1) + ":" + str(s2) + "～" + str(s3) + ":" + str(s4)))        
+                tree.insert(parent='', index='end', iid=i ,values=(i+1,str(s1) + ":" + str(s2) + "～" + str(s3) + ":" + str(s4)))        
                 
                 if i==9:
                     judge = 1
@@ -151,7 +153,7 @@ class log_window(QWidget):
         root.geometry('1200x800')
         
         font1 = font.Font(family='Helvetica', size=20, weight='bold')
-        label2 = tk.Label(root, text="Hello World!", fg="black", font=font1)
+        label2 = tk.Label(root, text="学籍番号及び居眠り時間帯", fg="black", font=font1)
         label2.pack(side="top")
         
         # Treeviewの生成
