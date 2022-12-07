@@ -96,8 +96,8 @@ class log_window(QWidget):
         font1 = font.Font(family='Helvetica', size=20, weight='bold')
         label1 = tk.Label(root, text="以下の時間帯に居眠りが集中しています!!", fg="red", font=font1)
         label1.pack(side="top")
-        label2 = tk.Label(root, text="演習を行うなどの授業内容の変更をお勧めします。", fg="black", font=font1)
-        label2.place(x=200, y=550)
+        label2 = tk.Label(root, text="当該時間に演習を行うなどの授業内容の変更をお勧めします。", fg="black", font=font1)
+        label2.place(x=50, y=550)
         # Treeviewの生成
         tree = ttk.Treeview(root, columns=column)
         # 文字サイズ
