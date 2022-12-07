@@ -4,6 +4,7 @@ from PyQt5.QtGui import QIcon
 from PyQt5.QtCore import *
 import tkinter as tk
 from tkinter import ttk
+from tkinter import font
 import camera
 import main
 import requests
@@ -60,7 +61,7 @@ class log_window(QWidget):
         lbl1 = QLabel('<p><font size="40" color="#00ff00">ログ</font></p>', self)
         lbl1.move(350, 10)
         
-        btn1 = QPushButton('集中', self) # ボタンウィジェット作成
+        btn1 = QPushButton('寝落ち集中時間帯', self) # ボタンウィジェット作成
         btn1.move(250, 100) # ボタンの位置設定(ボタンの左上の座標)
         btn1.resize(300,50)
         btn1.setStyleSheet('QPushButton {background-color: lightseagreen}')
@@ -78,20 +79,26 @@ class log_window(QWidget):
         btn2.clicked.connect(self.log_screen)
         btn3.clicked.connect(self.window_close)
         
+
+        
         
     def log_screen(self):
-        all_data = main.Refister_item()
         
         url = "http://127.0.0.1:8000/all"
         r = requests.get(url)
         data = r.json()
         
         # 列の識別名を指定
-        column = ('ID', 'Name', 'Score')
+        column = ('ID', 'Student_Number', 'Sleep_Time')
         # メインウィンドウの生成
         root = tk.Tk()
         root.title('ログ')
         root.geometry('1200x800')
+        
+        font1 = font.Font(family='Helvetica', size=20, weight='bold')
+        label2 = tk.Label(root, text="Hello World!", fg="black", font=font1)
+        label2.pack(side="top")
+        
         # Treeviewの生成
         tree = ttk.Treeview(root, columns=column)
         # 文字サイズ
@@ -101,20 +108,20 @@ class log_window(QWidget):
         # 列の設定
         tree.column('#0',width=0, stretch='no')
         tree.column('ID', anchor='center', width=200)
-        tree.column('Name',anchor='w', width=400)
-        tree.column('Score', anchor='center', width=400)
+        tree.column('Student_Number',anchor='w', width=400)
+        tree.column('Sleep_Time', anchor='center', width=400)
         # 列の見出し設定
         tree.heading('#0',text='')
         tree.heading('ID', text='ID',anchor='center')
-        tree.heading('Name', text='student_number', anchor='w')
-        tree.heading('Score',text='sleep_time', anchor='center')
+        tree.heading('Student_Number', text='student_number', anchor='w')
+        tree.heading('Sleep_Time',text='sleep_time', anchor='center')
         # レコードの追加
         
         for v in data.values():
-            for i in range(len(v)):
-                # v[i] : i番目のタプル
-                tree.insert(parent='', index='end', iid=0 ,values=(i+1, v[i]['student_number'], v[i]['sleep_time']))        
-        
+           for i in range(len(v)):
+              # v[i] : i番目のタプル
+             tree.insert(parent='', index='end', iid=i ,values=(i+1, v[i]['student_number'], v[i]['sleep_time']))        
+
         # ウィジェットの配置
         tree.pack(pady=10)
         root.mainloop()
