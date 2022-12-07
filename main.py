@@ -76,6 +76,9 @@ async def Register_sleep():
 #async def Register_item(student_number: int, shop_name: datetime):
     # 日時を取得.
     dt_now = datetime.datetime.now()
+    # 2022-12-13 13:00 のようになるよう秒以下を切り捨て
+    dt_now = dt_now.replace(microsecond = 0)
+
     student_number = 4620000
     sleep = Sleep(student_number=student_number,sleep_time=dt_now )
     db_session.add(sleep)
