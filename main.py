@@ -136,14 +136,14 @@ async def get_intensive():
         if v > 2:
             minutes = i % 2
             if minutes == 0:
-                start_hour = v//2
+                start_hour = i//2
                 start_minutes = 0
-                end_hour = v//2
+                end_hour = i//2
                 end_minutes = 30
             else:
-                start_hour = v//2
+                start_hour = i//2
                 start_minutes = 30
-                end_hour = v//2 + 1
+                end_hour = i//2 + 1
                 end_minutes = 0
 
             data = {
