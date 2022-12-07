@@ -76,12 +76,60 @@ class log_window(QWidget):
         btn3.move(0, 20) # ボタンの位置設定(ボタンの左上の座標)
         btn3.setStyleSheet('QPushButton {background-color: lightseagreen}')
         
+        btn1.clicked.connect(self.log_intensive_screen)
         btn2.clicked.connect(self.log_screen)
         btn3.clicked.connect(self.window_close)
         
+        
+    def log_intensive_screen(self):
+        url = "http://127.0.0.1:8000/intensive"
+        r = requests.get(url)
+        data = r.json()
+        
+        # 列の識別名を指定
+        column = ('Time')
+        # メインウィンドウの生成
+        root = tk.Tk()
+        root.title('ログ')
+        root.geometry('1200x800')
+        
+        font1 = font.Font(family='Helvetica', size=20, weight='bold')
+        label2 = tk.Label(root, text="Hello World!", fg="black", font=font1)
+        label2.pack(side="top")
+        
+        # Treeviewの生成
+        tree = ttk.Treeview(root, columns=column)
+        # 文字サイズ
+        style = ttk.Style()
+        style.configure("Treeview", font=(None, 15), rowheight=40)
+        style.configure("Treeview.Heading", font=(None, 20, 'bold'))
+        # 列の設定
+        tree.column('#0',width=0, stretch='no')
+        tree.column('Time', anchor='center', width=400)
+        # 列の見出し設定
+        tree.heading('#0',text='')
+        tree.heading('Time',text='Time', anchor='center')
+        # レコードの追加
+        
+        for v in data.values():
+           for i in range(len(v)):
+                # v[i] : i番目のタプル
+                #if v[i]['start']:
+                num1 = v[i]['start_hour']
+                num2 = v[i]['start_minutes']
+                num3 = v[i]['end_hour']
+                num4 = v[i]['end_minutes']
+                s1 = f'{num1:02}'
+                s2 = f'{num2:02}'
+                s3 = f'{num3:02}'
+                s4 = f'{num4:02}'
+                tree.insert(parent='', index='end', iid=i ,values=(str(s1) + ":" + str(s2) + "～" + str(s3) + ":" + str(s4)))        
 
+        # ウィジェットの配置
+        tree.pack(pady=10)
+        root.mainloop()
         
-        
+         
     def log_screen(self):
         
         url = "http://127.0.0.1:8000/all"
@@ -130,6 +178,7 @@ class log_window(QWidget):
         self.main = MainWindow()
         self.main.show()
         self.close()
+    
  
 
 if __name__ == '__main__':
