@@ -1,6 +1,6 @@
 import sys
 from PyQt5.QtWidgets import *
-from PyQt5.QtGui import QIcon
+from PyQt5.QtGui import *
 from PyQt5.QtCore import *
 import tkinter as tk
 from tkinter import ttk
@@ -13,9 +13,18 @@ import json
 class MainWindow(QWidget):
     def __init__(self, parent=None):
         super(MainWindow, self).__init__(parent) # 初期化
+        
+        QWidget.__init__(self)
+        self.layout = QGridLayout()
+        
+        p = self.palette()
+        p.setColor(self.backgroundRole(), QColor('#FFFFE0')) # 背景色
+        self.setPalette(p)
+        
         self.initUI() # UIの初期化
 
     def initUI(self): # UIの初期化をするメソッド
+        
         self.resize(800, 500) # ウィンドウの大きさの設定(横幅, 縦幅)
         self.move(-10, 0) # ウィンドウを表示する場所の設定(横, 縦)
         self.setWindowTitle('居眠り防止アプリケーション') # ウィンドウのタイトルの設定
@@ -26,18 +35,18 @@ class MainWindow(QWidget):
         lbl1.move(250, 10)
         
         btn1 = QPushButton('スタート！', self) # ボタンウィジェット作成
-        btn1.move(150, 200) # ボタンの位置設定(ボタンの左上の座標)
+        btn1.move(150, 200) # ボタンの位置設定
         btn1.resize(200,100)
         btn1.setStyleSheet('QPushButton {background-color: lightseagreen}')
     
         btn2 = QPushButton('設定', self) # ボタンウィジェット作成
         btn2.resize(btn2.sizeHint()) # ボタンのサイズの自動設定
-        btn2.move(550, 200) # ボタンの位置設定(ボタンの左上の座標)
+        btn2.move(550, 200) # ボタンの位置設定
         btn2.setStyleSheet('QPushButton {background-color: lightseagreen}')
         
         btn3 = QPushButton('ログ', self) # ボタンウィジェット作成
         btn3.resize(btn3.sizeHint()) # ボタンのサイズの自動設定
-        btn3.move(550, 280) # ボタンの位置設定(ボタンの左上の座標)
+        btn3.move(550, 280) # ボタンの位置設定
         btn3.setStyleSheet('QPushButton {background-color: lightseagreen}')
             
         self.sub=log_window()
@@ -49,6 +58,14 @@ class MainWindow(QWidget):
 class log_window(QWidget):
     def __init__(self,parent=None):
         super(log_window, self).__init__(parent) # 初期化
+        
+        QWidget.__init__(self)
+        self.layout = QGridLayout()
+        
+        p = self.palette()
+        p.setColor(self.backgroundRole(), QColor('#FFFFE0')) # 背景色
+        self.setPalette(p)
+        
         #self.initUI() # UIの初期化
         
     #def initUI(self):
@@ -62,18 +79,18 @@ class log_window(QWidget):
         lbl1.move(350, 10)
         
         btn1 = QPushButton('寝落ち集中時間帯', self) # ボタンウィジェット作成
-        btn1.move(250, 100) # ボタンの位置設定(ボタンの左上の座標)
+        btn1.move(250, 100) # ボタンの位置設定
         btn1.resize(300,50)
         btn1.setStyleSheet('QPushButton {background-color: lightseagreen}')
     
         btn2 = QPushButton('全て取得', self) # ボタンウィジェット作成
-        btn2.move(250, 200) # ボタンの位置設定(ボタンの左上の座標)
+        btn2.move(250, 200) # ボタンの位置設定
         btn2.resize(300, 50) # ボタンのサイズの自動設定
         btn2.setStyleSheet('QPushButton {background-color: lightseagreen}')
         
         btn3 = QPushButton('戻る', self) # ボタンウィジェット作成
         btn3.resize(btn3.sizeHint()) # ボタンのサイズの自動設定
-        btn3.move(0, 20) # ボタンの位置設定(ボタンの左上の座標)
+        btn3.move(0, 20) # ボタンの位置設定
         btn3.setStyleSheet('QPushButton {background-color: lightseagreen}')
         
         btn1.clicked.connect(self.log_intensive_screen)
@@ -90,7 +107,7 @@ class log_window(QWidget):
         column = ('ID', 'Time')
         # メインウィンドウの生成
         root = tk.Tk()
-        root.title('ログ')
+        root.title('寝落ち集中時間帯')
         root.geometry('1200x800')
         
         font1 = font.Font(family='Helvetica', size=20, weight='bold')
@@ -149,7 +166,7 @@ class log_window(QWidget):
         column = ('ID', 'Student_Number', 'Sleep_Time')
         # メインウィンドウの生成
         root = tk.Tk()
-        root.title('ログ')
+        root.title('全て取得')
         root.geometry('1200x800')
         
         font1 = font.Font(family='Helvetica', size=20, weight='bold')
