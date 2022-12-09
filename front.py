@@ -5,6 +5,7 @@ from PyQt5.QtCore import *
 import tkinter as tk
 from tkinter import ttk
 from tkinter import font
+import datetime
 import camera
 import main
 import requests
@@ -195,7 +196,8 @@ class log_window(QWidget):
         for v in data.values():
             for i in range(len(v)):
               # v[i] : i番目のタプル
-                tree.insert(parent='', index='end', iid=i ,values=(i+1, v[i]['student_number'], v[i]['sleep_time']))        
+                dte = datetime.datetime.strptime(v[i]['sleep_time'], '%Y-%m-%dT%H:%M:%S')
+                tree.insert(parent='', index='end', iid=i ,values=(i+1, v[i]['student_number'], str(dte.year)+'年'+str(dte.month)+'月'+str(dte.day)+'日 '+str(dte.hour)+'時'+str(dte.minute)+'分'+str(dte.second)+'秒'))        
                 if i==9:
                     judge = 1
                     break
@@ -211,8 +213,6 @@ class log_window(QWidget):
         self.main.show()
         self.close()
     
- 
-
 if __name__ == '__main__':
     app = QApplication(sys.argv) #PyQtで必ず呼び出す必要のあるオブジェクト
     main_window = MainWindow() #ウィンドウクラスのオブジェクト生成
