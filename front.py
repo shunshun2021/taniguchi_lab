@@ -168,7 +168,7 @@ class log_window(QWidget):
         # メインウィンドウの生成
         root = tk.Tk()
         root.title('全て取得')
-        root.geometry('1200x800')
+        root.geometry('1300x800')
         
         font1 = font.Font(family='Helvetica', size=20, weight='bold')
         label2 = tk.Label(root, text="学籍番号及び居眠り時間帯", fg="black", font=font1)
@@ -183,12 +183,12 @@ class log_window(QWidget):
         # 列の設定
         tree.column('#0',width=0, stretch='no')
         tree.column('ID', anchor='center', width=200)
-        tree.column('Student_Number',anchor='w', width=400)
-        tree.column('Sleep_Time', anchor='center', width=400)
+        tree.column('Student_Number',anchor='center', width=400)
+        tree.column('Sleep_Time', anchor='center', width=450)
         # 列の見出し設定
         tree.heading('#0',text='')
         tree.heading('ID', text='ID',anchor='center')
-        tree.heading('Student_Number', text='student_number', anchor='w')
+        tree.heading('Student_Number', text='student_number', anchor='center')
         tree.heading('Sleep_Time',text='sleep_time', anchor='center')
         # レコードの追加
         
@@ -197,7 +197,17 @@ class log_window(QWidget):
             for i in range(len(v)):
               # v[i] : i番目のタプル
                 dte = datetime.datetime.strptime(v[i]['sleep_time'], '%Y-%m-%dT%H:%M:%S')
-                tree.insert(parent='', index='end', iid=i ,values=(i+1, v[i]['student_number'], str(dte.year)+'年'+str(dte.month)+'月'+str(dte.day)+'日 '+str(dte.hour)+'時'+str(dte.minute)+'分'+str(dte.second)+'秒'))        
+                num1 = dte.month
+                num2 = dte.day
+                num3 = dte.hour
+                num4 = dte.minute
+                num5 = dte.second
+                s1 = f'{num1:02}'
+                s2 = f'{num2:02}'
+                s3 = f'{num3:02}'
+                s4 = f'{num4:02}'
+                s5 = f'{num5:02}'
+                tree.insert(parent='', index='end', iid=i ,values=(i+1, v[i]['student_number'], str(dte.year)+'年'+str(s1)+'月'+str(s2)+'日 '+str(s3)+'時'+str(s4)+'分'+str(s5)+'秒'))        
                 if i==9:
                     judge = 1
                     break
