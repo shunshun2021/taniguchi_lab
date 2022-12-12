@@ -39,10 +39,10 @@ class Sleep(Base):
 Base.metadata.create_all(bind=engine)
 
 #テンプレートの作成
-item = Sleep(student_number=4620000,sleep_time=datetime.datetime(2022,12,13,13,10))
+item = Sleep(student_number=4620000,sleep_time=datetime.datetime(2022,12,13,11,10))
 db_session.add(item)
-item = Sleep(student_number=4620999,sleep_time=datetime.datetime(2022,12,13,13,15))
+item = Sleep(student_number=4620999,sleep_time=datetime.datetime(2022,12,13,11,15))
 db_session.add(item)
-item = Sleep(student_number=4620999,sleep_time=datetime.datetime(2022,12,13,13,18))
+item = Sleep(student_number=4620999,sleep_time=datetime.datetime(2022,12,13,11,18))
 db_session.add(item)
 db_session.commit()
