@@ -13,7 +13,8 @@
 - PyQt, OpenCV, FastAPI, SQLAlchemy
 
 
-(English)
+---------------------------------------------------------------------------------------------------------
+
 #### Doze Prevention App
 - If it detects eyes closed for more than 3 seconds, it alerts you and records the time you fell asleep in the database.
 - Extract the times when users frequently doze off from the dozing logs (useful for teachers to improve their classes, etc.).
